@@ -61,23 +61,6 @@ module "l3_bastion_sg_ssh" {
   egress_rules = ["all-all"]
 }
 
-# SG for SFTP
-module "l3_bastion_sg_sftp" {
-  source = "terraform-aws-modules/security-group/aws"
-  name   = "allow-sftp"
-  vpc_id = module.l3_vpc.vpc_id
-  ingress_with_cidr_blocks = [
-    {
-      from_port   = 21
-      to_port     = 21
-      protocol    = "tcp"
-      description = "Allow SFTP traffic"
-      cidr_blocks = "0.0.0.0/0"
-    }
-  ]
-  egress_rules = ["all-all"]
-}
-
 # Security group allowing HTTP traffic in
 module "l3_bastion_sg_http" {
   source = "terraform-aws-modules/security-group/aws"
@@ -117,7 +100,6 @@ module "l3_bastion_instance" {
   key_name                    = "vockey"
   vpc_security_group_ids      = [
     module.l3_bastion_sg_ssh.security_group_id,
-    module.l3_bastion_sg_sftp.security_group_id,
     module.l3_bastion_sg_http.security_group_id
   ]
   associate_public_ip_address = true
