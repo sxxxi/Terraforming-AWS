@@ -3,10 +3,10 @@
 # $1 is the ecr url
 
 # Setup Docker
-if command -v docker &> /dev/null
+if ! command -v docker &> /dev/null
 then
   sudo yum update
-  sudo yum install docker
+  sudo yum install -y docker
   sudo systemctl enable --now docker 
   sudo groupadd docker
   sudo usermod -aG docker ec2-user
